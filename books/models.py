@@ -1,12 +1,12 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator
 
 class Book(models.Model):
-    
+
     class CoverChoices(models.TextChoices):
         HARD = "HARD", "Hardcover"
         SOFT = "SOFT", "Softcover"
-        
+
     title = models.CharField(max_length=255, null=False)
     publish_date = models.DateField(null=True)
     context = models.TextField(null=True)
@@ -17,6 +17,8 @@ class Book(models.Model):
         choices=CoverChoices.choices,
         default=CoverChoices.SOFT,
     )
+    count_books_in_library = models.PositiveIntegerField(null=False, blank=False, default=0, validators=[MinValueValidator(0)])
+    cost_per_day = models.DecimalField(max_digits=4, decimal_places=2, null=True)
 
 
 class Genre(models.Model):
