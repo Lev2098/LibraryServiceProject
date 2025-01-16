@@ -11,7 +11,7 @@ class Book(models.Model):
     publish_date = models.DateField(null=True)
     context = models.TextField(null=True)
     author = models.ForeignKey("Author", on_delete=models.DO_NOTHING, null=True)
-    genre = models.ManyToManyField("Genre", null=True)
+    genre = models.ManyToManyField("Genre", related_name="books")
     cover = models.CharField(
         max_length=10,
         choices=CoverChoices.choices,

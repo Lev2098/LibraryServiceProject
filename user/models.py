@@ -43,6 +43,9 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
+    contact_num = models.IntegerField(null=True)
+    telegram_id = models.CharField(null=True, blank=True, max_length=255)
+    is_email_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
