@@ -9,9 +9,9 @@ class Book(models.Model):
 
     title = models.CharField(max_length=255, null=False)
     publish_date = models.DateField(null=True)
-    context = models.TextField(null=True)
+    context = models.TextField(null=True, blank=True)
     author = models.ForeignKey("Author", on_delete=models.DO_NOTHING, null=True)
-    genre = models.ManyToManyField("Genre", related_name="books")
+    genre = models.ManyToManyField("Genre", related_name="books", blank=True, null=True)
     cover = models.CharField(
         max_length=10,
         choices=CoverChoices.choices,
@@ -33,7 +33,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=255, null=False)
     pseudonym = models.CharField(max_length=255, null=True)
     birth_date = models.DateField(null=True)
-    context = models.TextField(null=True)
+    context = models.TextField(null=True, blank=True)
 
     @property
     def full_name(self):
@@ -42,3 +42,6 @@ class Author(models.Model):
     @property
     def full_name_with_pseudonym(self):
         return f"{self.first_name} ({self.pseudonym}) {self.last_name}"
+
+    def __str__(self):
+        return self.full_name
