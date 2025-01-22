@@ -14,10 +14,10 @@ class BorrowBookSerializer(serializers.Serializer):
 class BorrowingSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
     cost_book_per_one_day = serializers.SerializerMethodField()
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Вибір користувача
-    duration_day = serializers.ReadOnlyField()  # Додаткове поле для кількості днів
-    overdue_day_count = serializers.ReadOnlyField()  # Додаткове поле для прострочених днів
-    cost = serializers.ReadOnlyField(source="calculate_cost")  # Кількість до сплати
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    duration_day = serializers.ReadOnlyField()
+    overdue_day_count = serializers.ReadOnlyField()
+    cost = serializers.ReadOnlyField(source="calculate_cost")
 
     class Meta:
         model = Borrowing

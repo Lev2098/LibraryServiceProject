@@ -1,10 +1,7 @@
 from datetime import date
 
 from django.db import transaction, IntegrityError
-from django.db.models.functions import NullIf
-from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
 
 from books.models import Book
 from .models import Borrowing, Payment

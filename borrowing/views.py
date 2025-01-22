@@ -5,8 +5,8 @@ from rest_framework.exceptions import ValidationError, NotFound
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
 
+from books.models import Book
 from borrowing.models import Borrowing, Payment
 from borrowing.serializers import (
     BorrowingSerializer,
@@ -83,10 +83,64 @@ class BorrowBookAddView(APIView):
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BorrowBookUpdateView(APIView):
     permission_classes = (IsAdminUser,)
+
     def put(self, request, *args, **kwargs):
+        """
+        Update borrowing record (e.g., change user, expected return date, or book).
+        """
+        borrowing_id = kwargs.get("pk")
         user_id = request.data.get("user")
+        book_id = request.data.get("book")
+        expected_return_date = request.data.get("expected_return_date")
+        status = request.data.get("status")
+
+        try:
+            borrowing = Borrowing.objects.get(id=borrowing_id)
+        except Borrowing.DoesNotExist:
+            return Response({"error": "Borrowing not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+                borrowing.user = user
+            except User.DoesNotExist:
+                return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if book_id:
+            try:
+                book = Book.objects.get(id=book_id)
+                borrowing.book = book
+            except Book.DoesNotExist:
+                return Response({"error": "Book not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if expected_return_date:
+            borrowing.expected_return_date = expected_return_date
+
+        if status:
+            borrowing.status = status
+
+
+        borrowing.save()
+
+        serializer = BorrowingSerializer(borrowing)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BorrowingDeleteView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request, pk, *args, **kwargs):
+        """Delete borrowing with the given ID."""
+        try:
+            borrowing = Borrowing.objects.get(id=pk)
+        except Borrowing.DoesNotExist:
+            return Response({"error": "Borrowing not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        borrowing.delete()
+        return Response({"message": "Borrowing deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
 class ReturnBookView(APIView):
@@ -270,3 +324,17 @@ class PaymentUpdateView(APIView):
 
             serializer = PaymentSerializer(payment)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class PaymentDeleteView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request, pk, *args, **kwargs):
+        """Delete payment with the given ID."""
+        try:
+            payment = Payment.objects.get(id=pk)
+        except Payment.DoesNotExist:
+            return Response({"error": "Payment not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        payment.delete()
+        return Response({"message": "Payment deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
