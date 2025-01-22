@@ -1,12 +1,15 @@
+from decimal import Decimal
+
+from django.apps import apps
 from django.contrib.auth.models import (
     AbstractUser,
-    BaseUserManager
+    UserManager as DjangoUserManager
 )
 from django.db import models
 from django.utils.translation import gettext as _
 
 
-class UserManager(BaseUserManager):
+class UserManager(DjangoUserManager):
     """Define a model manager for User model with no username field."""
 
     use_in_migrations = True
@@ -40,14 +43,19 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+
 class User(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
+
     contact_num = models.IntegerField(null=True)
     telegram_id = models.CharField(null=True, blank=True, max_length=255)
-    is_email_verified = models.BooleanField(default=False)
+
+    is_debtor = models.BooleanField(default=False)  # Позначення, чи є користувач боржником
+    debt_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)  # Сума боргу
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+

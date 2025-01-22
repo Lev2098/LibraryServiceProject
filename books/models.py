@@ -11,18 +11,18 @@ class Book(models.Model):
     publish_date = models.DateField(null=True)
     context = models.TextField(null=True, blank=True)
     author = models.ForeignKey("Author", on_delete=models.DO_NOTHING, null=True)
-    genre = models.ManyToManyField("Genre", related_name="books", blank=True, null=True)
+    genre = models.ManyToManyField("Genre", related_name="books", blank=True)
     cover = models.CharField(
         max_length=10,
         choices=CoverChoices.choices,
         default=CoverChoices.SOFT,
     )
     count_books_in_library = models.PositiveIntegerField(null=False, blank=False, default=0, validators=[MinValueValidator(0)])
-    cost_per_day = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+    cost_per_day = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, )
 
     def __str__(self):
         return self.name
