@@ -1,6 +1,3 @@
-from decimal import Decimal
-
-from django.apps import apps
 from django.contrib.auth.models import (
     AbstractUser,
     UserManager as DjangoUserManager

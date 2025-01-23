@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from books.models import Book
 from user.models import User
-from .models import Borrowing, Payment
+from borrowing.models import Borrowing, Payment
 
 
 class BorrowBookSerializer(serializers.Serializer):
@@ -21,15 +21,15 @@ class BorrowingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Borrowing
-        fields = ['id',
-                  'user',
-                  'book',
-                  'date_borrowed',
-                  'expected_return_date',
-                  'actual_return_date',
-                  'status',
+        fields = ["id",
+                  "user",
+                  "book",
+                  "date_borrowed",
+                  "expected_return_date",
+                  "actual_return_date",
+                  "status",
                    "cost_book_per_one_day",
-                  'duration_day', 'overdue_day_count', 'cost']
+                  "duration_day", "overdue_day_count", "cost"]
         read_only_fields = ["date_borrowed", "overdue_days"]
 
     def get_cost_book_per_one_day(self, obj):
@@ -41,8 +41,8 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ['id', 'status', 'type', 'date_paid', 'money_to_pay', 'session_url', 'session_id', 'borrowing']
-        read_only_fields = ['money_to_pay']
+        fields = ["id", "status", "type", "date_paid", "money_to_pay", "session_url", "session_id", "borrowing"]
+        read_only_fields = ["money_to_pay"]
 
     def create(self, validated_data):
         """Створюємо новий платіж."""

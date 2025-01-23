@@ -29,12 +29,12 @@ urlpatterns = [
     path("borrows/<int:pk>/return", ReturnBookView.as_view(), name="borrow-return"),
     path("borrows/<int:pk>/delete", BorrowingDeleteView.as_view(), name="borrow-delete"),
 
-    path('payments/', PaymentListUserView.as_view(), name='payment-user-list'),
-    path('payments/admin/', PaymentListAdminView.as_view(), name='payment-admin-list'),
-    path('payments/create/', PaymentCreateView.as_view(), name='payment-create'),
-    path('payments/<int:pk>/', PaymentDetailView.as_view(), name='payment-detail'),
-    path('payments/<int:pk>/update/', PaymentUpdateView.as_view(), name='payment-update'),
-    path('payments/<int:pk>/delete/', PaymentDeleteView.as_view(), name='payment-delete'),
+    path("payments/", PaymentListUserView.as_view(), name="payment-user-list"),
+    path("payments/admin/", PaymentListAdminView.as_view(), name="payment-admin-list"),
+    path("payments/create/", PaymentCreateView.as_view(), name="payment-create"),
+    path("payments/<int:pk>/", PaymentDetailView.as_view(), name="payment-detail"),
+    path("payments/<int:pk>/update/", PaymentUpdateView.as_view(), name="payment-update"),
+    path("payments/<int:pk>/delete/", PaymentDeleteView.as_view(), name="payment-delete"),
 
 ]
 

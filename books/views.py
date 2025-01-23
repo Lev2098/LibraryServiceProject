@@ -1,8 +1,7 @@
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from books.models import Book, Genre, Author
-from .serializers import (
+from books.serializers import (
     BookSerializer,
     GenreSerializer,
     AuthorSerializer
