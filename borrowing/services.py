@@ -4,7 +4,7 @@ from django.db import transaction, IntegrityError
 from rest_framework.exceptions import ValidationError
 
 from books.models import Book
-from .models import Borrowing, Payment
+from .models import Borrowing
 
 
 def borrow_book(user, book_id, expected_return_date):

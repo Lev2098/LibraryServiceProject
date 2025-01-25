@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from books.models import Book
 from user.models import User
-from borrowing.models import Borrowing, Payment
+from borrowing.models import Borrowing
 
 
 class BorrowBookSerializer(serializers.Serializer):
@@ -35,16 +35,3 @@ class BorrowingSerializer(serializers.ModelSerializer):
     def get_cost_book_per_one_day(self, obj):
         """Метод для отримання ціни за один день із пов’язаної моделі книги."""
         return obj.book.cost_per_day
-
-class PaymentSerializer(serializers.ModelSerializer):
-    borrowing = serializers.PrimaryKeyRelatedField(queryset=Borrowing.objects.all())
-
-    class Meta:
-        model = Payment
-        fields = ["id", "status", "type", "date_paid", "money_to_pay", "session_url", "session_id", "borrowing"]
-        read_only_fields = ["money_to_pay"]
-
-    def create(self, validated_data):
-        """Створюємо новий платіж."""
-        return Payment.objects.create(**validated_data)
-

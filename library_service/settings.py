@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "debug_toolbar",
     "borrowing",
+    "payments",
     "books",
     "user",
 ]
